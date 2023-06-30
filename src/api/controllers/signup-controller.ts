@@ -1,6 +1,8 @@
 import { Request, Response } from 'express'
 import crypto from 'crypto'
 import jwt from 'jsonwebtoken'
+import fs from 'fs'
+import path from 'path'
 import signVerifyOptions from '../config/sign-verify-options'
 import SignupRequestBody from '../interfaces/signup-request-body'
 import User from '../models/user-model'
@@ -22,9 +24,11 @@ async function signup(req: Request, res: Response) {
         user.setDataValue('id', id)
         await user.save()
 
-        const token = jwt.sign({
-            id: user.dataValues.id
-        }, process.env.JWT_SECRET as string, signVerifyOptions as jwt.SignOptions)
+        const token = jwt.sign(
+            { id: user.dataValues.id },
+            fs.readFileSync(path.join(__dirname, '..', 'jwt.key'), 'utf8'),
+            signVerifyOptions as jwt.SignOptions
+        )
         res.setHeader('Authorization', `Bearer ${token}`)
         res.status(201).json({ status: 'SUCCESS', message: 'User created successfully' })
     } catch (error) {
