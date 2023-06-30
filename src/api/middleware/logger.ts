@@ -4,6 +4,7 @@ import util from 'util'
 function logger(req: Request, res: Response, next: NextFunction) {
     const request = {
         method: req.method,
+        url: req.url,
         headers: req.headers,
         body: req.body
     }
