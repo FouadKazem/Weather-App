@@ -1,11 +1,10 @@
-import { UUID } from "crypto"
+import { UUID } from 'crypto'
+import LoginRequestBody from './login-request-body'
 
-interface SignupRequestBody {
+interface SignupRequestBody extends LoginRequestBody {
     id: UUID,
     firstName: string,
     lastName: string,
-    email: string,
-    password: string
 }
 
 export default SignupRequestBody
