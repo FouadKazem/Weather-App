@@ -1,4 +1,4 @@
-import { Request, Response } from 'express'
+import { Request, Response, NextFunction } from 'express'
 import crypto from 'crypto'
 import jwt from 'jsonwebtoken'
 import fs from 'fs'
@@ -6,8 +6,9 @@ import path from 'path'
 import signVerifyOptions from '../config/sign-verify-options'
 import SignupRequestBody from '../interfaces/signup-request-body'
 import User from '../models/user-model'
+import { BadRequestError } from '../errors'
 
-async function signup(req: Request, res: Response) {
+async function signup(req: Request, res: Response, next: NextFunction): Promise<void> {
     try {
         const { firstName, lastName, email, password }: SignupRequestBody = req.body
         const user = User.build({
@@ -26,14 +27,14 @@ async function signup(req: Request, res: Response) {
 
         const token = jwt.sign(
             { id: user.dataValues.id },
-            fs.readFileSync(path.join(__dirname, '..', 'jwt.key'), 'utf8'),
+            fs.readFileSync(path.join(__dirname, '..', 'secret.key'), 'utf8'),
             signVerifyOptions as jwt.SignOptions
         )
         res.setHeader('Authorization', `Bearer ${token}`)
         res.status(201).json({ status: 'SUCCESS', message: 'User created successfully' })
     } catch (error) {
         // console.log(JSON.parse(JSON.stringify(error)))
-        res.status(400).json({ status: 'FAILED', message: 'Please, submit valid data!' })
+        next(new BadRequestError('Please, submit valid data!'))
     }
 }
 
