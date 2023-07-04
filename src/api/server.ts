@@ -5,6 +5,7 @@ import { Sequelize } from 'sequelize'
 import generateSecretKey from './config/generate-secret-key'
 import registerModels from './config/register-models'
 import logger from './middleware/logger'
+import viewsHandler from './middleware/views-handler'
 import auth from './middleware/auth'
 import errorHandler from './middleware/error-handler'
 import loginRouter from './routes/login-router'
@@ -19,6 +20,7 @@ const app = express()
 app.use(logger)
 app.use(express.json())
 app.use(express.static(path.join(__dirname, 'public')))
+app.use(viewsHandler)
 app.use('/login', loginRouter)
 app.use('/signup', signupRouter)
 app.use('/weather', auth, weatherRouter)
