@@ -1,16 +1,11 @@
 import * as dotenv from 'dotenv'; dotenv.config()
 import express from 'express'
 import path from 'path'
+import { Worker } from 'worker_threads'
 import { Sequelize } from 'sequelize'
-import generateSecretKey from './config/generate-secret-key'
-import registerModels from './config/register-models'
-import logger from './middleware/logger'
-import viewsHandler from './middleware/views-handler'
-import auth from './middleware/auth'
-import errorHandler from './middleware/error-handler'
-import loginRouter from './routes/login-router'
-import signupRouter from './routes/signup-router'
-import weatherRouter from './routes/weather-router'
+import { generateSecretKey, registerModels } from './config'
+import { logger, viewsHandler, auth, errorHandler } from './middleware'
+import { loginRouter, signupRouter, weatherRouter } from './routes'
 import { NotFoundError } from './errors'
 
 const port = process.env.PORT || 5000
@@ -30,6 +25,13 @@ app.use(errorHandler)
 sequelize.authenticate().then(async () => {
     console.log('Connected to Database!')
     await registerModels()
-    generateSecretKey()
-    app.listen(port, () => console.log(`Server is listening on port ${port}...`))
-}) 
+    const worker = new Worker(path.join(__dirname, 'config', 'build-city-table.js'))
+    worker.on('exit', exitCode => {
+        if (exitCode == 0) {
+            generateSecretKey()
+            app.listen(port, () => console.log(`Server is listening on port ${port}...`))
+        } else {
+            throw new Error('Failed to build city table')
+        }
+    })
+})
