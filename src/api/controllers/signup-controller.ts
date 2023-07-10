@@ -33,7 +33,6 @@ async function signup(req: Request, res: Response, next: NextFunction): Promise<
         res.setHeader('Authorization', `Bearer ${token}`)
         res.status(201).json({ status: 'SUCCESS', message: 'User created successfully' })
     } catch (error) {
-        // console.log(JSON.parse(JSON.stringify(error)))
         next(new BadRequestError('Please, submit valid data!'))
     }
 }
