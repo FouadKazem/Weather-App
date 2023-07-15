@@ -4,7 +4,7 @@ import fs from 'fs'
 import path from 'path'
 import signVerifyOptions from '../config/sign-verify-options'
 import LoginRequestBody from '../interfaces/login-request-body'
-import User from '../models/user-model'
+import { User } from '../models'
 import { NotFoundError } from '../errors'
 
 async function login(req: Request, res: Response, next: NextFunction): Promise<void> {

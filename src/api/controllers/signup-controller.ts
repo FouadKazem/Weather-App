@@ -5,7 +5,7 @@ import fs from 'fs'
 import path from 'path'
 import signVerifyOptions from '../config/sign-verify-options'
 import SignupRequestBody from '../interfaces/signup-request-body'
-import User from '../models/user-model'
+import { User } from '../models'
 import { BadRequestError } from '../errors'
 
 async function signup(req: Request, res: Response, next: NextFunction): Promise<void> {
