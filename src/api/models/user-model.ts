@@ -68,7 +68,7 @@ const User = sequelize.define('user', {
         allowNull: false
     },
     cities: {
-        type: DataTypes.ARRAY(DataTypes.STRING)
+        type: DataTypes.ARRAY(DataTypes.UUID)
     }
 }, { freezeTableName: true })
 

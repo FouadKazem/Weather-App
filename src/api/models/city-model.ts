@@ -11,6 +11,10 @@ const City = sequelize.define('city', {
         type: DataTypes.STRING,
         allowNull: false
     },
+    name_ascii: {
+        type: DataTypes.STRING,
+        allowNull: false
+    },
     latitude: {
         type: DataTypes.FLOAT,
         allowNull: false
