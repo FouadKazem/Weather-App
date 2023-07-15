@@ -2,7 +2,7 @@ import readline from 'readline'
 import fs from 'fs'
 import path from 'path'
 import crypto from 'crypto'
-import City from '../models/city-model'
+import { City } from '../models'
 
 async function buildCityTable() {
     process.stdout.write('Checking the status of city table...\n')
@@ -37,6 +37,7 @@ async function buildCityTable() {
             modelArray.push({
                 id: crypto.randomUUID(),
                 name: columns[0],
+                name_ascii: columns[1],
                 latitude: columns[2],
                 longitude: columns[3],
                 country_name: columns[4]
@@ -47,7 +48,6 @@ async function buildCityTable() {
         await City.bulkCreate(modelArray, { logging: false })
         clearInterval(interval)
         process.stdout.write('\nFinished building city table!\n')
-        process.exit(0) 
     })
 }
 

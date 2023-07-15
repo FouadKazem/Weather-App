@@ -1,11 +1,21 @@
-import User from '../models/user-model'
-import City from '../models/city-model'
+import { User, City } from '../models'
 
 async function registerModels() {
+    const NODE_ENV = process.env.NODE_ENV
     try {
-        await User.sync()
-        await City.sync()
-        console.log('All Models Synced Successfully!')
+        await User.sync(
+            NODE_ENV == 'development' || NODE_ENV == undefined ?
+            { force: true }
+            :
+            undefined
+        )
+        await City.sync(
+            NODE_ENV == 'development' || NODE_ENV == undefined ?
+            { force: true }
+            :
+            undefined
+        )
+        console.log('All models synced successfully!')
     } catch (error) {
         console.error(error)
     }
