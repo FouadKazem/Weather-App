@@ -1,9 +1,11 @@
 import express from 'express'
-import { getDefaultCity, getCity } from '../controllers/weather-controller'
+import { getDefaultCity, getCity, addCity, getCities } from '../controllers/weather-controller'
 
 const router = express.Router()
 
 router.get('/', getDefaultCity)
-router.get('/:city_name', getCity)
+router.get('/search?', getCities)
+router.get('/:city_id', getCity)
+router.post('/:city_id', addCity)
 
 export default router
