@@ -4,9 +4,9 @@
   "description": "",
   "main": "./dist/server.js",
   "scripts": {
-    "ui:dev": "webpack-dev-server --config webpack.config.js",
-    "api:dev": "tsc -watch & nodemon dist/server.js",
-    "build": "NODE_ENV=production webpack --config webpack.config.js && tsc && node dist/server.js"
+    "client:dev": "sh scripts/client.dev.sh",
+    "server:dev": "sh scripts/server.dev.sh",
+    "build": "sh scripts/build.sh"
   },
   "keywords": [],
   "author": {
@@ -27,7 +27,7 @@
     "css-loader": "^6.7.3",
     "html-webpack-plugin": "^5.5.0",
     "mini-css-extract-plugin": "^2.7.6",
-    "nodemon": "^2.0.22",
+    "nodemon": "^3.0.1",
     "sass": "^1.63.6",
     "sass-loader": "^13.3.2",
     "style-loader": "^3.3.1",
@@ -47,8 +47,5 @@
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.14.0",
     "sequelize": "^6.32.1"
-  },
-  "overrides": {
-    "semver": "7.5.3"
   }
 }

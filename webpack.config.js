@@ -8,7 +8,7 @@ const NODE_ENV = process.env.NODE_ENV
 module.exports = {
     mode: NODE_ENV,
     devtool: NODE_ENV == 'development' ? 'source-map' : undefined,
-    entry: './src/ui/index.tsx',
+    entry: './src/client/index.tsx',
     output: {
         filename: 'index.js',
         path: path.join(__dirname, 'dist', 'public'),
@@ -39,7 +39,12 @@ module.exports = {
             },
             {
                 test: /\.(ts|tsx)$/,
-                use: 'ts-loader',
+                use: {
+                    loader: 'ts-loader',
+                    options: {
+                        configFile: 'tsconfig.client.json'
+                    }
+                },
                 exclude: /node_modules/,
             },
         ],
@@ -49,7 +54,7 @@ module.exports = {
     },
     plugins: [
         new HtmlWebpackPlugin({
-            template: './src/ui/index.html',
+            template: './src/client/index.html',
             filename: 'index.html',
             scriptLoading: 'blocking',
         }),
