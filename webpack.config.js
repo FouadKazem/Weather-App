@@ -6,12 +6,20 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const NODE_ENV = process.env.NODE_ENV
 
 module.exports = {
-    mode: NODE_ENV,
+    mode: NODE_ENV == 'development' ? 'development' : 'production',
     devtool: NODE_ENV == 'development' ? 'source-map' : undefined,
     entry: './src/client/index.tsx',
     output: {
         filename: 'index.js',
-        path: path.join(__dirname, 'dist', 'public'),
+        path: (
+            NODE_ENV == 'production' ?
+                path.join(__dirname, 'dist', 'public')
+                :
+                NODE_ENV == 'development' ?
+                    path.join(__dirname, 'tmp', 'client-dev')
+                    :
+                    path.join(__dirname, 'tmp', 'testing', 'server', 'public')
+        ),
         assetModuleFilename: 'assets/[hash][ext][query]',
     },
     module: {
@@ -62,7 +70,7 @@ module.exports = {
     ],
     devServer: NODE_ENV == 'development' ? {
         static: {
-            directory: path.join(__dirname, 'dist', 'public')
+            directory: path.join(__dirname, 'tmp', 'client-dev')
         },
         port: 3000,
         open: true,
